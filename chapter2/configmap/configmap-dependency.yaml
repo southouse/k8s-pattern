@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-dependency
+spec:
+  containers:
+    - name: random-generator
+      image: k8spatterns/random-generator:1.0
+      env:
+        - name: PATTERN
+          valueFrom:
+            configMapKeyRef:
+              key: pattern
+              name: random-generator-config
