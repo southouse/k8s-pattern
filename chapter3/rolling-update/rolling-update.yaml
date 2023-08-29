@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rolling-update
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1 # 업데이트 동안 일시적으로 지정된 레플리카 수에 더해, 실행될 수 있는 파드의 수 (해당 예제에서는 최대 4개)
+      maxUnavailable: 1 # 업데이트 동안 사용 불가능하게 될 수 있는 파드의 수 (해당 예제에서는 2개까지 동시에 사용)
+  selector:
+    matchLabels:
+      app: random-generator
+  template:
+    metadata:
+      labels:
+        app: random-generator
+    spec:
+      containers:
+        - name: random-generator
+          image: k8spatterns/random-generator:1.0
+          readinessProbe:
+            exec:
+              command:
+                - "stat"
+                - "/random-generator-ready"
