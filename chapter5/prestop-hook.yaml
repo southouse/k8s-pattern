@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: prestop-hook
+spec:
+  containers:
+    - name: random-generator
+      image: k8spatterns/random-generator:1.0
+      lifecycle:
+        preStop:
+          httpGet:
+            path: /shutdown
+            port: 8080
