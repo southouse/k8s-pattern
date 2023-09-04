@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: random-generator
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution: # numberCores`라는 키 값에 3이 넘는 라벨이 있는 노드에 할당
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: numberCores
+                operator: Gt
+                values:
+                  - "3"
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchFields:
+              - key: metadata.name
+                operator: NotIn
+                values:
+                  - "master"
+          weight: 1
+  containers:
+    - name: random-generator
+      image: k8spatterns/random-generator:1.0
