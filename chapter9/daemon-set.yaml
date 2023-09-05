@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: random-refresher
+spec:
+  selector:
+    matchLabels:
+      app: random-refresher
+  template:
+    metadata:
+      labels:
+        app: random-refresher
+    spec:
+      nodeSelector:
+        feature: hw-rng
+      containers:
+        - name: random-generator
+          image: k8spatterns/random-generator:1.0
+          command:
+            - java
+            - "-version"
+            - sleep 5
+          volumeMounts:
+            - mountPath: /host_dev
+              name: devices
+      volumes:
+        - name: devices
+          hostPath:
+            path: /dev
