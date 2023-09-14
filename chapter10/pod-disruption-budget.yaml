@@ -1,0 +1,9 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: random-generator-pdb
+spec:
+  selector:
+    matchLabels: # 파드와 매핑하기 위한 셀렉터
+      app: random-generator
+  minAvailable: 2 # 최소 2개의 파드가 가용해야 함 (비율로 지정 가능)
