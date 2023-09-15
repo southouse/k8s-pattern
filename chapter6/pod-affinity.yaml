@@ -11,7 +11,7 @@ spec:
               confidential: high
           topologyKey: security-zone
     podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution: # 
+      preferredDuringSchedulingIgnoredDuringExecution: # confidential=none 레이블을 가진 파드가 실행 중인 노드에 배치되어서는 안 되지만, 배치될 수도 있음
         - podAffinityTerm:
             labelSelector:
               matchLabels:
