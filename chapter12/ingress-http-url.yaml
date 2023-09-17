@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: random-generator
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: / # /cluster-status를 제외한 모든 요청을 random-generator 서비스로 리디렉션
+        pathType: Prefix
+        backend:
+          service:
+            name: random-generator
+            port:
+              number: 8080
+      - path: /cluster-status
+        pathType: Prefix
+        backend:
+          service:
+            name: cluster-status # /cluster-status 경로의 요청을 cluster-status 서비스로 리디렉션
+            port:
+              number: 80
