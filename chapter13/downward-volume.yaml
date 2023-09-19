@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: random-generator
+spec:
+  containers:
+    - name: random-generator
+      image: k8spatterns/random-generator:1.0
+      volumeMounts:
+        - mountPath: /pod-info
+          name: pod-info
+  volumes:
+    - name: pod-info
+      downwardAPI:
+        items:
+          - path: labels
+            fieldRef:
+              fieldPath: metadata.labels
+          - path: annotations
+            fieldRef:
+              fieldPath: metadata.annotations
